@@ -3,6 +3,7 @@
 
 #include "CharacterStat/ABCharacterStatComponent.h"
 #include "GameData/ABGameSingleton.h"
+#include "Net/UnrealNetwork.h"
 
 // Sets default values for this component's properties
 UABCharacterStatComponent::UABCharacterStatComponent()
@@ -16,9 +17,17 @@ UABCharacterStatComponent::UABCharacterStatComponent()
 void UABCharacterStatComponent::InitializeComponent()
 {
 	Super::InitializeComponent();
-
+	
 	SetLevelStat(CurrentLevel);
 	SetHp(BaseStat.MaxHp);
+	SetIsReplicated(true);
+}
+
+void UABCharacterStatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(UABCharacterStatComponent, CurrentHp);
 }
 
 void UABCharacterStatComponent::SetLevelStat(int32 InNewLevel)
@@ -45,4 +54,9 @@ void UABCharacterStatComponent::SetHp(float NewHp)
 	CurrentHp = FMath::Clamp<float>(NewHp, 0.0f, BaseStat.MaxHp);
 	
 	OnHpChanged.Broadcast(CurrentHp);
+}
+
+void UABCharacterStatComponent::OnRep_CurrentHP()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("OnRep_CurrentHP"));
 }

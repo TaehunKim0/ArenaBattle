@@ -13,6 +13,7 @@
 #include "UI/ABWidgetComponent.h"
 #include "UI/ABHpBarWidget.h"
 #include "Item/ABItems.h"
+#include "Net/UnrealNetwork.h"
 
 DEFINE_LOG_CATEGORY(LogABCharacter);
 
@@ -23,6 +24,9 @@ AABCharacterBase::AABCharacterBase()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
+
+	// Replication
+	bReplicates = true;
 
 	// Capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
@@ -116,6 +120,11 @@ void AABCharacterBase::PostInitializeComponents()
 
 	Stat->OnHpZero.AddUObject(this, &AABCharacterBase::SetDead);
 	Stat->OnStatChanged.AddUObject(this, &AABCharacterBase::ApplyStat);
+}
+
+void AABCharacterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 }
 
 void AABCharacterBase::SetCharacterControlData(const UABCharacterControlData* CharacterControlData)

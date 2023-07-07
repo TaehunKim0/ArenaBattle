@@ -39,6 +39,7 @@ public:
 	AABCharacterBase();
 
 	virtual void PostInitializeComponents() override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 protected:
 	virtual void SetCharacterControlData(const class UABCharacterControlData* CharacterControlData);
