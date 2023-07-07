@@ -40,7 +40,9 @@ public:
 	FORCEINLINE float GetCurrentHp() const { return CurrentHp; }
 	FORCEINLINE void HealHp(float InHealAmount) { CurrentHp = FMath::Clamp(CurrentHp + InHealAmount, 0, GetTotalStat().MaxHp); OnHpChanged.Broadcast(CurrentHp); }
 	FORCEINLINE float GetAttackRadius() const { return AttackRadius; }
-	float ApplyDamage(float InDamage);
+
+	UFUNCTION(NetMulticast, Reliable)
+	void ApplyDamage(float InDamage);
 
 protected:
 	void SetHp(float NewHp);

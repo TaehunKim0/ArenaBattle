@@ -28,7 +28,7 @@ void UABCharacterStatComponent::SetLevelStat(int32 InNewLevel)
 	check(BaseStat.MaxHp > 0.0f);
 }
 
-float UABCharacterStatComponent::ApplyDamage(float InDamage)
+void UABCharacterStatComponent::ApplyDamage_Implementation(float InDamage)
 {
 	const float PrevHp = CurrentHp;
 	const float ActualDamage = FMath::Clamp<float>(InDamage, 0, InDamage);
@@ -38,8 +38,6 @@ float UABCharacterStatComponent::ApplyDamage(float InDamage)
 	{
 		OnHpZero.Broadcast();
 	}
-
-	return ActualDamage;
 }
 
 void UABCharacterStatComponent::SetHp(float NewHp)
@@ -48,4 +46,3 @@ void UABCharacterStatComponent::SetHp(float NewHp)
 	
 	OnHpChanged.Broadcast(CurrentHp);
 }
-
