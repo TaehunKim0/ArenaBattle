@@ -21,10 +21,12 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
-	void SetNetworkRoleUI() const;	
+	//** Actor Replication **//
+	void SetNetworkRoleUI() const;
 	void SetNetworkModeUI() const;
 	void SetIsReplicateUI() const;
 	void SetRelevancyUI() const;
+	void SetOwnerShipUI() const;
 
 	static FString NetRoleToString(ENetRole NetRole);
 	static FString NetModeToString(ENetMode NetMode);

@@ -3,6 +3,8 @@
 
 #include "UI/ABNetworkDebugWidgetComponent.h"
 #include "ABNetworkDebugWidget.h"
+#include "GameFramework/Character.h"
+#include "Kismet/GameplayStatics.h"
 
 UABNetworkDebugWidgetComponent::UABNetworkDebugWidgetComponent()
 {
@@ -30,6 +32,7 @@ void UABNetworkDebugWidgetComponent::TickComponent(float DeltaTime, ELevelTick T
 	SetNetworkModeUI();
 	SetIsReplicateUI();
 	SetRelevancyUI();
+	SetOwnerShipUI();
 }
 
 void UABNetworkDebugWidgetComponent::SetNetworkRoleUI() const
@@ -79,6 +82,26 @@ void UABNetworkDebugWidgetComponent::SetRelevancyUI() const
 		Text += GetOwner()->bNetUseOwnerRelevancy ? TEXT("NetUseOwnerRelevancy") : TEXT("NotNetUseOwnerRelevancy");
 		
 		DebugWidget->Relevancy->SetText(FText::FromString(Text));
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Cyan, FString::Printf(TEXT("없음!")));
+	}
+}
+
+void UABNetworkDebugWidgetComponent::SetOwnerShipUI() const
+{
+	if (DebugWidget->IsValidLowLevel())
+	{
+		const bool bHasLocalNetOwner = GetOwner()->HasLocalNetOwner();
+		
+		FString Text = bHasLocalNetOwner ? TEXT("HasLocalNetOwner") : TEXT("NotHasLocalNetOwner");
+		Text += TEXT(", ");
+		
+		if(true == bHasLocalNetOwner)
+			Text += Cast<ACharacter>(GetOwner())->GetController()->GetName();
+
+		DebugWidget->Owner->SetText(FText::FromString(Text));
 	}
 	else
 	{
