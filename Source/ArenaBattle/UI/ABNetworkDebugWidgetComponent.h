@@ -16,6 +16,20 @@ class ARENABATTLE_API UABNetworkDebugWidgetComponent : public UWidgetComponent
 
 public:
 	UABNetworkDebugWidgetComponent();
+	
+	virtual void BeginPlay() override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	FString NetRole2String(ENetRole NetRole);
+
+private:
+	void SetNetworkRoleUI() const;	
+	void SetNetworkModeUI() const;
+	void SetIsReplicateUI() const;
+	void SetRelevancyUI() const;
+
+	static FString NetRoleToString(ENetRole NetRole);
+	static FString NetModeToString(ENetMode NetMode);
+	
+private:
+	UPROPERTY()
+	class UABNetworkDebugWidget* DebugWidget;
 };
