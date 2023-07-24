@@ -28,6 +28,11 @@ void UABNetworkDebugWidgetComponent::TickComponent(float DeltaTime, ELevelTick T
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	
+	SetActorReplicationUI();
+}
+
+void UABNetworkDebugWidgetComponent::SetActorReplicationUI() const
+{
 	SetNetworkRoleUI();
 	SetNetworkModeUI();
 	SetIsReplicateUI();
@@ -43,7 +48,7 @@ void UABNetworkDebugWidgetComponent::SetNetworkRoleUI() const
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Cyan, FString::Printf(TEXT("없음!")));
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Cyan, FString::Printf(TEXT("DebugWidget 없음!")));
 	}
 }
 
@@ -56,7 +61,7 @@ void UABNetworkDebugWidgetComponent::SetNetworkModeUI() const
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Cyan, FString::Printf(TEXT("없음!")));
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Cyan, FString::Printf(TEXT("DebugWidget 없음!")));
 	}
 }
 
@@ -69,7 +74,7 @@ void UABNetworkDebugWidgetComponent::SetIsReplicateUI() const
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Cyan, FString::Printf(TEXT("없음!")));
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Cyan, FString::Printf(TEXT("DebugWidget 없음!")));
 	}
 }
 
@@ -85,7 +90,7 @@ void UABNetworkDebugWidgetComponent::SetRelevancyUI() const
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Cyan, FString::Printf(TEXT("없음!")));
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Cyan, FString::Printf(TEXT("DebugWidget 없음!")));
 	}
 }
 
@@ -105,7 +110,7 @@ void UABNetworkDebugWidgetComponent::SetOwnerShipUI() const
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Cyan, FString::Printf(TEXT("없음!")));
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Cyan, FString::Printf(TEXT("DebugWidget 없음!")));
 	}
 }
 

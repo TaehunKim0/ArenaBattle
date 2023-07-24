@@ -22,6 +22,8 @@ public:
 
 private:
 	//** Actor Replication **//
+	void SetActorReplicationUI() const;
+	
 	void SetNetworkRoleUI() const;
 	void SetNetworkModeUI() const;
 	void SetIsReplicateUI() const;
