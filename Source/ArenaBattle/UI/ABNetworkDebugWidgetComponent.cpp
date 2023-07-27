@@ -38,6 +38,7 @@ void UABNetworkDebugWidgetComponent::SetActorReplicationUI() const
 	SetIsReplicateUI();
 	SetRelevancyUI();
 	SetOwnerShipUI();
+	SetHostUI();
 }
 
 void UABNetworkDebugWidgetComponent::SetNetworkRoleUI() const
@@ -107,6 +108,40 @@ void UABNetworkDebugWidgetComponent::SetOwnerShipUI() const
 			Text += Cast<ACharacter>(GetOwner())->GetController()->GetName();
 
 		DebugWidget->Owner->SetText(FText::FromString(Text));
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Cyan, FString::Printf(TEXT("DebugWidget 없음!")));
+	}
+}
+
+void UABNetworkDebugWidgetComponent::SetHostUI() const
+{
+	if (DebugWidget->IsValidLowLevel())
+	{
+		auto Player = Cast<ACharacter>(GetOwner());
+		if (Player->IsLocallyControlled())
+		{
+			if (Player->HasAuthority())
+			{
+				DebugWidget->Host->SetText(FText::FromString(TEXT("서버")));
+			}
+			else
+			{
+				DebugWidget->Host->SetText(FText::FromString(TEXT("클라")));
+			}
+		}
+		else
+		{
+			if (Player->HasAuthority())
+			{
+				DebugWidget->Host->SetText(FText::FromString(TEXT("클라")));
+			}
+			else
+			{
+				DebugWidget->Host->SetText(FText::FromString(TEXT("서버")));
+			}
+		}
 	}
 	else
 	{

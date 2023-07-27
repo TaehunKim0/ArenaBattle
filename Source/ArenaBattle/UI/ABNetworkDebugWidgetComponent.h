@@ -29,6 +29,7 @@ private:
 	void SetIsReplicateUI() const;
 	void SetRelevancyUI() const;
 	void SetOwnerShipUI() const;
+	void SetHostUI() const;
 
 	static FString NetRoleToString(ENetRole NetRole);
 	static FString NetModeToString(ENetMode NetMode);

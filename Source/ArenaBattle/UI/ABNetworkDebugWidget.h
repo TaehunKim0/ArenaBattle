@@ -30,4 +30,7 @@ public:
 
 	UPROPERTY(meta=(BindWidget))
 	UTextBlock* Relevancy;
+
+	UPROPERTY(meta=(BindWidget))
+	UTextBlock* Host;
 };
