@@ -33,6 +33,9 @@ void UABNetworkDebugWidgetComponent::TickComponent(float DeltaTime, ELevelTick T
 
 void UABNetworkDebugWidgetComponent::SetActorReplicationUI() const
 {
+	if(GetOwner() == nullptr)
+		return;
+	
 	SetNetworkRoleUI();
 	SetNetworkModeUI();
 	SetIsReplicateUI();
@@ -70,8 +73,12 @@ void UABNetworkDebugWidgetComponent::SetIsReplicateUI() const
 {
 	if (DebugWidget->IsValidLowLevel())
 	{
-		const FText Text = GetOwner()->GetIsReplicated() ? FText::FromString(TEXT("True")) : FText::FromString(TEXT("False"));
-		DebugWidget->Replicates->SetText(Text);
+		FString Text = GetOwner()->GetIsReplicated() ? TEXT("True") : TEXT("False");
+		Text += TEXT(", ");
+		Text += GetOwner()->bNetLoadOnClient ? TEXT("NetLoadOnClient") : TEXT("NotNetLoadOnClient");
+		
+		DebugWidget->Replicates->SetText(FText::FromString(Text));
+		
 	}
 	else
 	{
@@ -106,6 +113,10 @@ void UABNetworkDebugWidgetComponent::SetOwnerShipUI() const
 		
 		if(true == bHasLocalNetOwner)
 			Text += Cast<ACharacter>(GetOwner())->GetController()->GetName();
+		{
+			if(GetOwner()->GetOuter() != nullptr)
+				Text += GetOwner()->GetOuter()->GetName(); // 만약 Outer 가 레벨이라면 레벨 이름 출력
+		}
 
 		DebugWidget->Owner->SetText(FText::FromString(Text));
 	}
@@ -119,7 +130,11 @@ void UABNetworkDebugWidgetComponent::SetHostUI() const
 {
 	if (DebugWidget->IsValidLowLevel())
 	{
+		if(DebugWidget->Host->IsValidLowLevel() == false) return;
+		
 		auto Player = Cast<ACharacter>(GetOwner());
+		if(false == IsValid(Player)) return; 
+		
 		if (Player->IsLocallyControlled())
 		{
 			if (Player->HasAuthority())
