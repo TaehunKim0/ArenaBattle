@@ -26,6 +26,27 @@ ANetCullActor::ANetCullActor()
 void ANetCullActor::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// UWorld *World = GetWorld();
+	// // 폰을 가져옵니다.
+	// APawn* Pawn = World->GetFirstPlayerController()->GetPawn();
+	// if (!Pawn)
+	// {
+	// 	UE_LOG(LogTemp, Warning, TEXT("폰 없음"));
+	// 	return;
+	// }
+	//
+	// USkeletalMeshComponent* MeshComponent = Pawn->FindComponentByClass<USkeletalMeshComponent>();
+	// if (!MeshComponent)
+	// {
+	// 	UE_LOG(LogTemp, Warning, TEXT("메시 컴포넌트 없음"));
+	// 	return;
+	// }
+	//
+	// FName SocketName = FName("Bip001");
+	//
+	// FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::KeepWorld, false);
+	// AttachToComponent(MeshComponent, AttachmentRules, SocketName);
 }
 
 // Called every frame
@@ -33,29 +54,29 @@ void ANetCullActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	auto RelevantCheck = IsNetRelevantFor(GetWorld()->GetFirstPlayerController(), GetWorld()->GetFirstPlayerController(), GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation());
-	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Cyan, FString::Printf(TEXT("%d"), RelevantCheck));
-	
-	if(CheckNetRelevancy())
-	{
-		const UEnum* RelevancyEnumType = FindObject<UEnum>(nullptr, TEXT("/Script/ArenaBattle.ENetRelevancy"));
-		checkf(RelevancyEnumType, TEXT("ENetRelevancy 없음"));
-
-		FString RelevancyMetaData = RelevancyEnumType->GetDisplayNameTextByValue(static_cast<int64>(EMyNetRelevancy)).ToString();
-		UE_LOG(LogTemp, Log, TEXT("Relevancy Type : %s "),*RelevancyMetaData); // int 형 말고 , Meta의 DisplayName 을 출력하자
-
-		FRotator Rotator = this->GetActorRotation();
-		Rotator.Yaw += DeltaTime * 50.f;
-		SetActorRotation(Rotator);
-		return;
-	}
-
-	if (GetNetMode() == NM_Client)
-	{
-		FRotator Rotator = this->GetActorRotation();
-		Rotator.Yaw += DeltaTime * 50.f;
-		SetActorRotation(Rotator);
-	}
+	// auto RelevantCheck = IsNetRelevantFor(GetWorld()->GetFirstPlayerController(), GetWorld()->GetFirstPlayerController(), GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation());
+	// GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Cyan, FString::Printf(TEXT("%d"), RelevantCheck));
+	//
+	// if(CheckNetRelevancy())
+	// {
+	// 	const UEnum* RelevancyEnumType = FindObject<UEnum>(nullptr, TEXT("/Script/ArenaBattle.ENetRelevancy"));
+	// 	checkf(RelevancyEnumType, TEXT("ENetRelevancy 없음"));
+	//
+	// 	FString RelevancyMetaData = RelevancyEnumType->GetDisplayNameTextByValue(static_cast<int64>(EMyNetRelevancy)).ToString();
+	// 	UE_LOG(LogTemp, Log, TEXT("Relevancy Type : %s "),*RelevancyMetaData); // int 형 말고 , Meta의 DisplayName 을 출력하자
+	//
+	// 	FRotator Rotator = this->GetActorRotation();
+	// 	Rotator.Yaw += DeltaTime * 50.f;
+	// 	SetActorRotation(Rotator);
+	// 	return;
+	// }
+	//
+	// if (GetNetMode() == NM_Client)
+	// {
+	// 	FRotator Rotator = this->GetActorRotation();
+	// 	Rotator.Yaw += DeltaTime * 50.f;
+	// 	SetActorRotation(Rotator);
+	// }
 	
 
 	
@@ -63,9 +84,9 @@ void ANetCullActor::Tick(float DeltaTime)
 
 bool ANetCullActor::IsNetRelevantFor(const AActor* RealViewer, const AActor* ViewTarget, const FVector& SrcLocation) const
 {
-	// Super::IsNetRelevantFor(RealViewer, ViewTarget, SrcLocation)
-	// ? GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Cyan, FString::Printf(TEXT("연관있음")))
-	// : GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Cyan, FString::Printf(TEXT("연관없음")));
+	Super::IsNetRelevantFor(RealViewer, ViewTarget, SrcLocation)
+	? GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Cyan, FString::Printf(TEXT("연관있음")))
+	: GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Cyan, FString::Printf(TEXT("연관없음")));
 	
 	return Super::IsNetRelevantFor(RealViewer, ViewTarget, SrcLocation);
 }
